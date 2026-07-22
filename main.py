@@ -1,28 +1,59 @@
+from datetime import datetime
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm, AdminLogin
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 # adding a secret key to make my site
 # somewhat secure
-
 app.config["SECRET_KEY"] = "07315b38258dc4a63b758ed311da3b71"
 
-# assume that this are my posts, which
-# I receive when I do a database call
-posts = [
-    {
-        "author": "Sandeep Kumar Kuanar",
-        "title": "Blog post 1",
-        "content": "first post content",
-        "date_posted": "July 20, 2026",
-    },
-    {
-        "author": "Sandeep Kumar Kuanar",
-        "title": "Blog post 2",
-        "content": "second post content",
-        "date_posted": "July 21, 2026",
-    },
-]
+# adding the database
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+db = SQLAlchemy(app)
+# Association table for Posts and Tags
+post_tags = db.Table(
+    "post_tags",
+    db.Column("post_id", db.Integer, db.ForeignKey("post.id"), primary_key=True),
+    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"), primary_key=True),
+)
+
+
+# having a user class
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    image_file = db.Column(db.String(300), nullable=False, default="default.jpg")
+    password = db.Column(db.String(60), nullable=False)
+    posts = db.relationship("Post", backref="author", lazy=True)
+
+    def __repr__(self) -> str:
+        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+
+
+# having a post class
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # Foreign key linking to User.id
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    title = db.Column(db.String(300), unique=True, nullable=False)  # Fixed length
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    image_file = db.Column(db.String(300), nullable=False, default="default.jpg")
+    content = db.Column(db.Text, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"Post('{self.title}', '{self.date_posted}')"
+
+
+# having a tagging system for
+# the blogs that we write
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"Tag('{self.name}')"
 
 
 @app.route("/")
