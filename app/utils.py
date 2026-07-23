@@ -3,8 +3,7 @@ import os
 import zipfile
 import re
 import markdown2
-
-# from werkzeug.utils import secure_filename
+import shutil
 from flask import current_app
 
 
@@ -19,6 +18,17 @@ def extract_zip(zip_file, post_id):
     try:
         with zipfile.ZipFile(zip_file, "r") as z:
             z.extractall(temp_dir)
+
+        # --- NEW: Flatten the structure if there's a single folder ---
+        items = os.listdir(temp_dir)
+        if len(items) == 1 and os.path.isdir(os.path.join(temp_dir, items[0])):
+            folder_path = os.path.join(temp_dir, items[0])
+            for file in os.listdir(folder_path):
+                src = os.path.join(folder_path, file)
+                dst = os.path.join(temp_dir, file)
+                shutil.move(src, dst)
+            os.rmdir(folder_path)
+        # --- End flattening ---
 
         # Find the .md file (there should be exactly one)
         md_files = [f for f in os.listdir(temp_dir) if f.endswith(".md")]
@@ -43,7 +53,7 @@ def extract_zip(zip_file, post_id):
             raise ValueError("No title found (first line starting with '# ').")
         content_raw = "\n".join(content_lines)
 
-        # Collect images in the zip root (no subfolders)
+        # Collect images in the zip root
         image_filenames = []
         for filename in os.listdir(temp_dir):
             if filename.lower().endswith(
@@ -51,20 +61,26 @@ def extract_zip(zip_file, post_id):
             ):
                 image_filenames.append(filename)
 
+        # --- NEW: Save images to permanent location ---
+        if image_filenames:
+            post_images_dir = os.path.join(
+                current_app.config["UPLOAD_FOLDER"], "post_images", str(post_id)
+            )
+            os.makedirs(post_images_dir, exist_ok=True)
+            for img in image_filenames:
+                src = os.path.join(temp_dir, img)
+                dst = os.path.join(post_images_dir, img)
+                shutil.move(src, dst)
+
         # Rewrite image paths in content_raw
-        # I want to replace patterns like ![alt](filename) with /static/post_images/<post_id>/filename
-        # Also handled./filename and ../filename
         for img in image_filenames:
-            # pattern: ![alt](some/path/filename) or ![alt](filename)
-            # I want to replace with /static/post_images/<post_id>/filename
-            # Keep absolute URLs untouched.
             pattern = r"(!\[.*?\]\()(.*?)(" + re.escape(img) + r")(\))"
 
             def repl(match):
                 prefix = match.group(1)
                 path = match.group(2)
                 suffix = match.group(4)
-                # If path starts with http:// or https:// or /, leave as is
+                # If path starts with http://, https://, or /, leave as is
                 if path.startswith(("http://", "https://", "/")):
                     return match.group(0)
                 # Otherwise rewrite
@@ -75,9 +91,7 @@ def extract_zip(zip_file, post_id):
 
         return title, content_raw, image_filenames
     finally:
-        # Clean up temp directory
-        import shutil
-
+        # Clean up temp directory (images have been moved, so it's safe)
         shutil.rmtree(temp_dir, ignore_errors=True)
 
 
@@ -86,3 +100,4 @@ def render_markdown(md_content):
     return markdown2.markdown(
         md_content, extras=["fenced-code-blocks", "tables", "header-ids"]
     )
+

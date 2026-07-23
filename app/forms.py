@@ -60,8 +60,8 @@ class PostForm(FlaskForm):
         "Upload Blog ZIP (contains .md and images)",
         validators=[FileAllowed(["zip"], "ZIP files only!")],
     )
-    title = StringField("Title", validators=[DataRequired()])
-    content = TextAreaField("Content (Markdown)", validators=[DataRequired()])
+    title = StringField("Title (auto-filled from ZIP)")
+    content = TextAreaField("Content (auto-filled from ZIP)")
     cover_image = FileField(
         "Cover Photo",
         validators=[
