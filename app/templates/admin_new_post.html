@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="admin-form-page">
+  <h1>New Post</h1>
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    
+    <div class="form-field">
+      {{ form.zip_file.label }}
+      {{ form.zip_file(class="form-input") }}
+      {% if form.zip_file.errors %}
+        <div class="invalid">
+          {% for error in form.zip_file.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+      {% endif %}
+      <small>Upload a ZIP containing exactly one .md file and images (optional).</small>
+    </div>
+
+    <div class="form-field">
+      {{ form.title.label }}
+      {{ form.title(class="form-input") }}
+      {% if form.title.errors %}
+        <div class="invalid">
+          {% for error in form.title.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-field">
+      {{ form.content.label }}
+      {{ form.content(class="form-input", rows="15") }}
+      {% if form.content.errors %}
+        <div class="invalid">
+          {% for error in form.content.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+      {% endif %}
+      <small>Markdown content (if not using ZIP).</small>
+    </div>
+
+    <div class="form-field">
+      {{ form.cover_image.label }}
+      {{ form.cover_image(class="form-input") }}
+      {% if form.cover_image.errors %}
+        <div class="invalid">
+          {% for error in form.cover_image.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+      {% endif %}
+      <small>Hero image shown at the top of the post.</small>
+    </div>
+
+    <div class="form-field">
+      {{ form.read_time.label }}
+      {{ form.read_time(class="form-input", type="number", min="1") }}
+      {% if form.read_time.errors %}
+        <div class="invalid">
+          {% for error in form.read_time.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-field">
+      {{ form.tags.label }}
+      <select name="tags" id="tags" multiple class="form-input" size="5">
+        {% for tag in Tag.query.all() %}
+          <option value="{{ tag.id }}" 
+            {% if tag.id in form.tags.data %}selected{% endif %}>
+            {{ tag.name }}
+          </option>
+        {% endfor %}
+      </select>
+      {% if form.tags.errors %}
+        <div class="invalid">
+          {% for error in form.tags.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+      {% endif %}
+      <small>Hold Ctrl/Cmd to select multiple tags.</small>
+    </div>
+
+    <div class="form-submit">
+      {{ form.submit(class="btn btn-primary") }}
+    </div>
+  </form>
+</div>
+{% endblock %}
