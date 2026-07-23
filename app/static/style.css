@@ -155,7 +155,7 @@ a:hover {
 
 .blog-list-title {
   font-family: var(--font-serif);
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 600;
   margin-bottom: 2.5rem;
   letter-spacing: -0.02em;
@@ -179,7 +179,7 @@ a:hover {
 }
 
 .post-title {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-family: var(--font-serif);
   font-weight: 500;
   margin-bottom: 0.2rem;
@@ -407,7 +407,6 @@ a:hover {
 .post{
   max-width: var(--max-width);
   margin: 0 auto;  
-  padding: 0 1.5rem;
 }
 
 .post-hero {
@@ -433,6 +432,9 @@ a:hover {
 
 .post-hero-text {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .post-hero-image {
@@ -589,7 +591,23 @@ body {
 
 .footer-text:hover {
   opacity: 0.8;
-}/* ===== RESPONSIVE ===== */
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;  /* ← Increase this value for more space */
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color var(--transition);
+}
+
+.back-link:hover {
+  color: var(--accent-hover);
+}
+
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .nav-container {
     flex-direction: column;

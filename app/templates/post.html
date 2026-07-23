@@ -4,9 +4,15 @@
   <section class="post-hero">
     <div class="post-hero-container">
       <div class="post-hero-text">
+        <a href="{{ url_for('blogs_page') }}" class="back-link">
+          <- Back to Writings
+        </a>
+
         <span class="post-category">
           {% if post.tags %}
-            {{ post.tags[0].name }} <!-- or a list -->
+          {% for tag in post.tags %}
+            {{ tag.name }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
           {% endif %}
         </span>
         <h1 class="post-title">{{ post.title }}</h1>

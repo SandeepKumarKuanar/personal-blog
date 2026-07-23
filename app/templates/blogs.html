@@ -4,14 +4,14 @@
 <section class="blog-list">
   <p class="blog-list-title">
     <a href="{{ url_for('main_page') }}">Home</a>
-     >
+    ->
     Writings
   </p>
   {% for post in posts %}
   <article class="blog-post">
     <h2 class="post-title">
-      <a href="#">{{ post.title }}</a>
-    </h2>
+      <a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a>
+    </h2>    
     <div class="post-meta">
       <span class="post-author">{{ post.author.username }}</span>
       <span class="post-date">{{ post.date_posted.strftime('%B %d, %Y') }}</span>
