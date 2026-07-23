@@ -67,10 +67,10 @@ def logout():
     return redirect(url_for("blogs_page"))
 
 
-@app.route("/account")
+@app.route("/dashboard")
 @login_required
 def account():
-    return render_template("account.html", title="Accounts")
+    return render_template("dashboard.html", title="Accounts")
 
 
 @app.route("/admin", methods=["GET", "POST"])

@@ -18,40 +18,29 @@
       rel="stylesheet"
     />
 
-    <!-- Your Custom CSS -->
+    <!-- Custom CSS -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
   </head>
   <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="{{ url_for('main_page') }}" class="nav-logo">Sandeep Kumar Kuanar</a>
-        <ul class="nav-links">
-          <li><a href="{{ url_for('main_page') }}">Home</a></li>
-          <li><a href="{{ url_for('blogs_page') }}">Writings</a></li>
-          <li><a href="https://github.com/yourusername" target="_blank">GitHub</a></li>
-          <li><a href="https://x.com/yourusername" target="_blank">X</a></li>
-          <li><a href="https://discord.gg/yourinvite" target="_blank">Discord</a></li>
-          <li><a href="mailto:your@email.com">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
-
     <!-- Flash Messages -->
-    {% with messages=get_flashed_messages(with_categories=True) %} {% if messages
-    %} {% for category, message in messages %}
+    {% with messages=get_flashed_messages(with_categories=True) %} 
+    {% if messages%} {% for category, message in messages %}
     <div class="alert alert-{{ category }}">{{ message }}</div>
     {% endfor %} {% endif %} {% endwith %}
 
     <!-- Main Content -->
-    <main class="container">{% block content %}{% endblock %}</main>
+    <main class="container">
+      {% block content %}{% endblock %}
+    
+    </main>
 
+    
     <!-- Footer -->
     <footer class="footer">
-      <p><a href="{{ url_for('main_page') }}">home</a></p>
+      <span class="footer-text">sandeep</span>
     </footer>
   </body>
 </html>

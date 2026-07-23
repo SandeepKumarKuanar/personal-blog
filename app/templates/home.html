@@ -1,0 +1,32 @@
+<!-- This is home.html -->
+{% extends "layout.html" %}
+{% block content %}
+<div class="home-page">
+  <section class="hero">
+    <h1 class="hero-title">Sandeep Kumar Kuanar</h1>
+    <p class="hero-bio">
+      Developer, Physics undergrad, and writer at IISER-Kolkata. Currently
+      learning Rust and AI/ML to build low-level infra adhering to the
+      UNIX philosophy. I have made
+      <a href="#" class="project-link">Project 1</a>,
+      <a href="#" class="project-link">Project 2</a>. Currently running a
+      Discord community dedicated to AI/ML from systems-thinking first
+      principles.
+    </p>
+  </section>
+  <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <ul class="nav-links">
+          <li><a href="{{ url_for('main_page') }}">Home</a></li>
+          <li><a href="{{ url_for('blogs_page') }}">Writings</a></li>
+          <li><a href="https://github.com/SandeepKumarKuanar" target="_blank">GitHub</a></li>
+          <li><a href="https://x.com/kuanar_sandeep" target="_blank">X</a></li>
+          <li><a href="https://discord.gg/Q5CkTkvC3" target="_blank">Discord</a></li>
+          <li><a href="mailto:kuanarsandeepkumar@gmail.com">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  
+</div>
+{% endblock %}

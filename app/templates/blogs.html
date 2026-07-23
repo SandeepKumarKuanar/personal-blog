@@ -2,7 +2,11 @@
 {% extends "layout.html" %}
 {% block content %}
 <section class="blog-list">
-  <h1 class="blog-list-title">Writings</h1>
+  <p class="blog-list-title">
+    <a href="{{ url_for('main_page') }}">Home</a>
+     >
+    Writings
+  </p>
   {% for post in posts %}
   <article class="blog-post">
     <h2 class="post-title">
