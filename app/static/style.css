@@ -403,6 +403,145 @@ a:hover {
   content: 'ℹ️ ';
 }
 
+/* ===== POST HERO ===== */
+.post-hero {
+  padding: 4rem 0 2rem;
+}
+
+.post-hero-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .post-hero-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+  }
+}
+
+.post-hero-text {
+  flex: 1;
+}
+
+.post-hero-image {
+  flex: 1;
+  max-width: 100%;
+}
+
+.post-hero-image img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.post-category {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.post-hero .post-title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.post-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.post-author {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ===== POST CONTENT ===== */
+.post-content {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.post-content h1, .post-content h2, .post-content h3 {
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.post-content h1 { font-size: 2rem; }
+.post-content h2 { font-size: 1.6rem; }
+.post-content h3 { font-size: 1.3rem; }
+
+.post-content p {
+  margin-bottom: 1.5rem;
+}
+
+.post-content blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  color: var(--text-muted);
+}
+
+.post-content code {
+  background: var(--bg-secondary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.post-content pre {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  margin: 1.5rem 0;
+}
+
+.post-content ul, .post-content ol {
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-content a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
 /* ===== FOOTER - Sticky to bottom ===== */
 html,
 body {

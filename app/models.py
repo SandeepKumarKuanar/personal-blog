@@ -24,23 +24,35 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(300), nullable=False, default="default.jpg")
     password = db.Column(db.String(60), nullable=False)
+    is_admin = db.Column(
+        db.Boolean, default=False, nullable=False
+    )  # add this if not present
     posts = db.relationship("Post", backref="author", lazy=True)
 
-    def __repr__(self) -> str:
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}')"
 
 
 # having a post class
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # Foreign key linking to User.id
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    title = db.Column(db.String(300), unique=True, nullable=False)  # Fixed length
+    title = db.Column(db.String(300), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    image_file = db.Column(db.String(300), nullable=False, default="default.jpg")
-    content = db.Column(db.Text, nullable=False)
+    image_file = db.Column(
+        db.String(300), nullable=False, default="default.jpg"
+    )  # cover image
+    content = db.Column(db.Text, nullable=False)  # rendered HTML
+    content_raw = db.Column(db.Text, nullable=False)  # raw Markdown
+    read_time = db.Column(db.Integer, nullable=False, default=5)  # in minutes
+    tags = db.relationship(
+        "Tag",
+        secondary=post_tags,
+        backref=db.backref("posts", lazy="dynamic"),
+        lazy=True,
+    )
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
 
@@ -50,5 +62,5 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return f"Tag('{self.name}')"

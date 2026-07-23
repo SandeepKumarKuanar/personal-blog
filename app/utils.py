@@ -3,7 +3,8 @@ import os
 import zipfile
 import re
 import markdown2
-from werkzeug.utils import secure_filename
+
+# from werkzeug.utils import secure_filename
 from flask import current_app
 
 

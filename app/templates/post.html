@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<article class="post">
+  <section class="post-hero">
+    <div class="post-hero-container">
+      <div class="post-hero-text">
+        <span class="post-category">
+          {% if post.tags %}
+            {{ post.tags[0].name }} <!-- or a list -->
+          {% endif %}
+        </span>
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-meta">
+          <span class="post-date">{{ post.date_posted.strftime('%B %d, %Y') }}</span>
+          <span class="post-read-time">{{ post.read_time }} MIN READ</span>
+        </div>
+        <span class="post-author">By {{ post.author.username }}</span>
+      </div>
+      <div class="post-hero-image">
+        <img src="{{ url_for('static', filename=post.image_file) }}" alt="{{ post.title }}">
+      </div>
+    </div>
+  </section>
+
+  <section class="post-content">
+    {{ post.content | safe }}
+  </section>
+</article>
+{% endblock %}

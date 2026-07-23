@@ -2,15 +2,19 @@
 # this is forms.py
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import (
     BooleanField,
     StringField,
     PasswordField,
     SubmitField,
     ValidationError,
+    TextAreaField,
+    IntegerField,
+    SelectMultipleField,
 )
 
-from app.models import User
+from app.models import User, Tag
 
 
 class AdminLogin(FlaskForm):
@@ -49,3 +53,28 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired()])
     remember = BooleanField("Remember me")
     submit = SubmitField("Login in")
+
+
+class PostForm(FlaskForm):
+    zip_file = FileField(
+        "Upload Blog ZIP (contains .md and images)",
+        validators=[FileAllowed(["zip"], "ZIP files only!")],
+    )
+    title = StringField("Title", validators=[DataRequired()])
+    content = TextAreaField("Content (Markdown)", validators=[DataRequired()])
+    cover_image = FileField(
+        "Cover Photo",
+        validators=[
+            FileRequired(),
+            FileAllowed(["jpg", "png", "jpeg", "gif", "webp"], "Images only!"),
+        ],
+    )
+    read_time = IntegerField(
+        "Estimated Read Time (minutes)", validators=[DataRequired()], default=5
+    )
+    tags = SelectMultipleField("Tags", coerce=int, validators=[DataRequired()])
+    submit = SubmitField("Publish")
+
+    def __init__(self, *args, **kwargs):
+        super(PostForm, self).__init__(*args, **kwargs)
+        self.tags.choices = [(tag.id, tag.name) for tag in Tag.query.all()]
