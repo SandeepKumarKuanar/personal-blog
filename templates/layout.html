@@ -1,0 +1,57 @@
+<!-- This is layout.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if title %}
+    <title>{{ title }} | Sandeep Kumar Kuanar</title>
+    {% else %}
+    <title>Sandeep Kumar Kuanar</title>
+    {% endif %}
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Your Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="{{ url_for('main_page') }}" class="nav-logo">Sandeep Kumar Kuanar</a>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('main_page') }}">Home</a></li>
+          <li><a href="{{ url_for('blogs_page') }}">Writings</a></li>
+          <li><a href="https://github.com/yourusername" target="_blank">GitHub</a></li>
+          <li><a href="https://x.com/yourusername" target="_blank">X</a></li>
+          <li><a href="https://discord.gg/yourinvite" target="_blank">Discord</a></li>
+          <li><a href="mailto:your@email.com">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages=get_flashed_messages(with_categories=True) %} {% if messages
+    %} {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %} {% endif %} {% endwith %}
+
+    <!-- Main Content -->
+    <main class="container">{% block content %}{% endblock %}</main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p><a href="{{ url_for('main_page') }}">home</a></p>
+    </footer>
+  </body>
+</html>

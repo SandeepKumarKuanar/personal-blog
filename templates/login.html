@@ -1,0 +1,51 @@
+<!-- This is login.html -->
+{% extends "layout.html" %}
+{% block content %}
+<div class="form-page">
+  <div class="form-container">
+    <h1>Login</h1>
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend>Welcome Back</legend>
+
+        <div class="form-field">
+          {{ form.email.label }} {{ form.email(class="form-input") }}
+          {% if form.email.errors %}
+          <div class="invalid">
+            {% for error in form.email.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          {{ form.password.label }} {{ form.password(class="form-input") }}
+          {% if form.password.errors %}
+          <div class="invalid">
+            {% for error in form.password.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="form-remember">
+          {{ form.remember }} {{ form.remember.label }}
+        </div>
+      </fieldset>
+
+      <div class="form-submit">
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+
+      <div class="form-links">
+        <a href="#" class="form-link">Forgot password?</a>
+        <br />
+        <small>Need an account? <a href="{{ url_for('register') }}">Sign up now!</a></small>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

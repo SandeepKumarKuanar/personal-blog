@@ -1,0 +1,20 @@
+<!-- This is blogs.html -->
+{% extends "layout.html" %}
+{% block content %}
+<section class="blog-list">
+  <h1 class="blog-list-title">Writings</h1>
+  {% for post in posts %}
+  <article class="blog-post">
+    <h2 class="post-title">
+      <a href="#">{{ post.title }}</a>
+    </h2>
+    <div class="post-meta">
+      <span class="post-author">{{ post.author.username }}</span>
+      <span class="post-date">{{ post.date_posted.strftime('%B %d, %Y') }}</span>
+    </div>
+  </article>
+  {% else %}
+  <p class="no-posts">No posts yet. Check back soon!</p>
+  {% endfor %}
+</section>
+{% endblock %}

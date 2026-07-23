@@ -1,4 +1,5 @@
 # a place where every form has it's own place
+# this is forms.py
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flask_wtf import FlaskForm
 from wtforms import (
