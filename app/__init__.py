@@ -7,6 +7,7 @@ from flask_login import LoginManager
 # Get the directory where this __init__.py file is located (app/)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 app = Flask(
     __name__,
     static_folder=os.path.join(BASE_DIR, "static"),  # app/static/
@@ -14,7 +15,9 @@ app = Flask(
 )
 
 app.config["SECRET_KEY"] = "your-secret-key"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"sqlite:///{os.path.join(BASE_DIR, '..', 'instance', 'site.db')}"
+)
 app.config["UPLOAD_FOLDER"] = os.path.join(BASE_DIR, "static")  # app/static/
 
 # Ensure the upload subdirectories exist inside app/static/
