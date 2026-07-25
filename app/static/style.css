@@ -849,6 +849,131 @@ body {
   text-decoration: none;
 }
 
+/* ===== Tag cloud accompanied by JS ===== */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 0.5rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.3rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  transition: background var(--transition), color var(--transition), transform 0.15s ease;
+  cursor: pointer;
+}
+
+.tag:hover {
+  background: var(--border);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.tag.active {
+  background: var(--accent);
+  color: var(--bg-primary);
+  border-color: var(--accent);
+}
+
+.tag.active:hover {
+  background: var(--accent-hover);
+  color: var(--bg-primary);
+}
+
+.tag-count {
+  font-size: 0.65rem;
+  font-weight: 400;
+  opacity: 0.7;
+  line-height: 1;
+  color: inherit;
+  margin-left: 0.1rem;
+}
+
+/* ===== FILTER CONTROLS ===== */
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 680px;
+  margin: 0 auto 1.5rem;
+  padding: 0 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-controls span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.mode-toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.mode-btn {
+  padding: 0.3rem 0.8rem;
+  background: var(--bg-secondary);
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.mode-btn:hover {
+  background: var(--border);
+}
+
+.mode-btn.active {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+.clear-filter {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.clear-filter:hover {
+  color: var(--accent);
+}
+
+/* ===== INLINE TAGS ON POSTS ===== */
+.post-tags-inline {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.tag-inline {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
 
 /* ===== RESPONSIVE website ===== */
 @media (max-width: 768px) {

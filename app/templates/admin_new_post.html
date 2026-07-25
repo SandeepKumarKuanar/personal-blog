@@ -17,16 +17,6 @@
     </div>
 
     <div class="form-field">
-      {{ form.title.label }}
-      {{ form.title(class="form-input", readonly=true) }}
-    </div>
-
-    <div class="form-field">
-      {{ form.content.label }}
-      {{ form.content(class="form-input", rows="10", readonly=true) }}
-    </div>
-
-    <div class="form-field">
       {{ form.cover_image.label }}
       {{ form.cover_image(class="form-input") }}
       {% if form.cover_image.errors %}

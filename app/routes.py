@@ -3,11 +3,12 @@ import os
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
-from app.forms import RegistrationForm, LoginForm, AdminLogin, PostForm
+from app.forms import RegistrationForm, LoginForm, PostForm
 from app import app, bcrypt, db
 from app.models import Post, User, Tag
 from app.utils import extract_zip, render_markdown
-import logging
+from sqlalchemy import or_
+# from logging import Logger
 
 
 @app.route("/")
@@ -18,8 +19,49 @@ def main_page():
 
 @app.route("/writings")
 def blogs_page():
-    posts = Post.query.filter_by(published=True).order_by(Post.date_posted.desc()).all()
-    return render_template("blogs.html", posts=posts, title="Writings")
+    # clean tags, lowercased
+    tag_names = request.args.getlist("tag")
+    mode = request.args.get("mode", "or").lower()
+
+    # Base query: only published posts
+    query = Post.query.filter_by(published=True)
+
+    if tag_names:
+        tag_names = [t.strip().lower() for t in tag_names if t.strip()]
+        # the mode is AND operator
+        if mode == "and":
+            for tag_name in tag_names:
+                subquery = (
+                    Post.query.join(Post.tags)
+                    .filter(Tag.name.ilike(tag_name))
+                    .subquery()
+                )
+                query = query.join(subquery, Post.id == subquery.c.id)
+
+        else:
+            # OR Operator on the tag cloud
+            conditions = [Tag.name.ilike(tag_name) for tag_name in tag_names]
+            query = query.join(Post.tags).filter(or_(*conditions)).distinct()
+
+    # Order by date (newest first)
+    posts = query.order_by(Post.date_posted.desc()).all()
+
+    # get all the tags of posts
+    # which are published
+    all_tags = Tag.query.all()
+
+    # Add published count to each tag
+    for tag in all_tags:
+        tag.published_count = tag.posts.filter_by(published=True).count()
+
+    return render_template(
+        "blogs.html",
+        posts=posts,
+        all_tags=all_tags,
+        active_tags=tag_names,
+        mode=mode,
+        title="Writings",
+    )
 
 
 @app.route("/register", methods=["GET", "POST"])

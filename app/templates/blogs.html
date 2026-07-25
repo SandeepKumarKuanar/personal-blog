@@ -1,24 +1,64 @@
 <!-- This is blogs.html -->
 {% extends "layout.html" %}
+
 {% block content %}
 <section class="blog-list">
+
   <p class="blog-list-title">
-    <a href="{{ url_for('main_page') }}">Home</a>
-    ->
-    Writings
+    <a href="{{ url_for('main_page') }}">Home</a> > Writings
   </p>
-  {% for post in posts %}
-  <article class="blog-post">
-    <h2 class="post-title">
-      <a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a>
-    </h2>    
-    <div class="post-meta">
-      <span class="post-author">{{ post.author.username }}</span>
-      <span class="post-date">{{ post.date_posted.strftime('%B %d, %Y') }}</span>
+
+  
+  <div class="tag-cloud">
+    {% for tag in all_tags %}
+      <a href="#" 
+         class="tag {% if tag.name.lower() in active_tags %}active{% endif %}"
+         data-tag="{{ tag.name.lower() }}">
+        {{ tag.name }}
+        <span class="tag-count">({{ tag.published_count }})</span>      
+      </a>
+    {% endfor %}
+  </div>
+
+
+  <div class="filter-controls">
+    <span>Show posts with:</span>
+    <div class="mode-toggle">
+      <button class="mode-btn {% if mode == 'or' %}active{% endif %}" data-mode="or">OR</button>
+      <button class="mode-btn {% if mode == 'and' %}active{% endif %}" data-mode="and">AND</button>
     </div>
-  </article>
+    {% if active_tags %}
+      <a href="{{ url_for('blogs_page') }}" class="clear-filter">Clear filter</a>
+    {% endif %}
+  </div>
+
+  
+
+
+  {% if posts %}
+    {% for post in posts %}
+    <article class="blog-post">
+      <h2 class="post-title">
+        <a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a>
+      </h2>    
+      <div class="post-meta">
+        <span class="post-author">{{ post.author.username }}</span>
+        <span class="post-date">{{ post.date_posted.strftime('%B %d, %Y') }}</span>
+        {% if post.tags %}
+          <span class="post-tags-inline">
+            {% for tag in post.tags %}
+              <span class="tag-inline">{{ tag.name }}</span>
+            {% endfor %}
+          </span>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
   {% else %}
-  <p class="no-posts">No posts yet. Check back soon!</p>
-  {% endfor %}
+    <p class="no-posts">No posts yet. Check back soon!</p>
+  {% endif %}
 </section>
+
+<!-- JAVASCRIPT -->
+<script src="{{ url_for('static', filename='js/tags.js') }}"></script>
 {% endblock %}
