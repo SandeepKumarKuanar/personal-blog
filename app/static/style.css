@@ -595,7 +595,7 @@ body {
 
 .back-link {
   display: inline-block;
-  margin-bottom: 1.5rem;  /* ← Increase this value for more space */
+  margin-bottom: 1.5rem;    
   color: var(--accent);
   text-decoration: none;
   font-size: 0.9rem;
@@ -606,8 +606,206 @@ body {
   color: var(--accent-hover);
 }
 
+/* ===== DASHBOARD ===== */
+.dashboard-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
 
-/* ===== RESPONSIVE ===== */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard-title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: var(--accent);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background-color var(--transition), transform 0.15s ease;
+}
+
+.btn-add:hover {
+  background-color: var(--accent-hover);
+  color: var(--bg-primary);
+  transform: translateY(-1px);
+}
+
+.add-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+/* Dashboard Posts */
+.dashboard-post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-post:last-child {
+  border-bottom: none;
+}
+
+.post-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.post-info .post-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.post-info .post-title a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.post-info .post-title a:hover {
+  color: var(--accent);
+}
+
+.post-info .post-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.post-status {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-published {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+}
+
+.status-draft {
+  background: rgba(241, 196, 15, 0.2);
+  color: #f1c40f;
+}
+
+.post-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+}
+
+.tag-badge {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+/* Post Actions */
+.post-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  padding: 0.3rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.btn-action:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.btn-edit:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-unpublish:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.no-posts {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/* ===== RESPONSIVE Dashboard ===== */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .btn-add {
+    justify-content: center;
+  }
+
+  .dashboard-post {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .post-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+
+/* ===== RESPONSIVE website ===== */
 @media (max-width: 768px) {
   .nav-container {
     flex-direction: column;

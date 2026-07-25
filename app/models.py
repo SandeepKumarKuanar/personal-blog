@@ -49,6 +49,7 @@ class Post(db.Model):
         backref=db.backref("posts", lazy="dynamic"),
         lazy=True,
     )
+    published = db.Column(db.Boolean, default=True, nullable=False)
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"

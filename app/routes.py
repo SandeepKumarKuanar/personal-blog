@@ -15,13 +15,10 @@ def main_page():
     return render_template("home.html", title="Home")
 
 
-@app.route("/post")
-@app.route("/posts")
-@app.route("/articles")
-@app.route("/blogs")
+@app.route("/writings")
 def blogs_page():
-    posts = Post.query.all()
-    return render_template("blogs.html", posts=posts, title="Blogs")
+    posts = Post.query.filter_by(published=True).order_by(Post.date_posted.desc()).all()
+    return render_template("blogs.html", posts=posts, title="Writings")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -73,23 +70,12 @@ def logout():
 @app.route("/dashboard")
 @login_required
 def account():
-    return render_template("dashboard.html", title="Accounts")
-
-
-@app.route("/admin", methods=["GET", "POST"])
-def admin_login():
-    form = AdminLogin()
-    if (
-        form.validate_on_submit()
-        and form.email.data == "admin@blog.com"
-        and form.password.data == "password"
-    ):
-        flash("Logged in as ADMIN Successfully!!", "success")
-        return redirect(url_for("blogs_page"))
-    else:
-        flash("Incorrect username or password!", "danger")
-
-    return render_template("adminLogin.html", title="Admin login", form=form)
+    posts = (
+        Post.query.filter_by(user_id=current_user.id)
+        .order_by(Post.date_posted.desc())
+        .all()
+    )
+    return render_template("dashboard.html", title="Accounts", posts=posts)
 
 
 # we are adding new post here
@@ -158,4 +144,36 @@ def new_post():
 @app.route("/post/<int:post_id>")
 def post_detail(post_id):
     post = Post.query.get_or_404(post_id)
+    # we need to stop people from accessing the post
+    # if it's not published
+    if not post.published and not (
+        current_user.is_authenticated and current_user.is_admin
+    ):
+        abort(404)
     return render_template("post.html", title=post.title, post=post)
+
+
+# unpublish a published blog
+@app.route("/admin/toggle-publish/<int:post_id>", methods=["POST"])
+@login_required
+def toggle_publish(post_id):
+    if not current_user.is_admin:
+        abort(403)
+
+    post = Post.query.get_or_404(post_id)
+    post.published = not post.published  # Toggle the status
+    db.session.commit()
+
+    status = "published" if post.published else "unpublished"
+    flash(f'Post "{post.title}" has been {status}.', "success")
+    return redirect(url_for("account"))
+
+
+# to edit a published post
+@app.route("/admin/edit-post/<int:post_id>", methods=["GET"])
+@login_required
+def edit_post(post_id):
+    if not current_user.is_admin:
+        abort(403)
+    flash("Edit functionality coming soon!", "info")
+    return redirect(url_for("account"))
