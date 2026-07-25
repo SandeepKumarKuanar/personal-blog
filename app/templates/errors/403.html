@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="error-page">
+  <div class="error-container">
+    <span class="error-code">403</span>
+    <h1 class="error-title">Forbidden</h1>
+    <p class="error-message">
+      You don't have permission to access this page.
+    </p>
+    <a href="{{ url_for('main_page') }}" class="btn btn-primary">
+      ← Back to Home
+    </a>
+  </div>
+</div>
+{% endblock %}

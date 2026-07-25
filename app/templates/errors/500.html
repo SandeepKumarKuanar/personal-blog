@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="error-page">
+  <div class="error-container">
+    <span class="error-code">500</span>
+    <h1 class="error-title">Server Error</h1>
+    <p class="error-message">
+      Something went wrong on our end. Please try again later.
+    </p>
+    <p class="error-message">
+      We have logged the error.
+    </p>
+    <a href="{{ url_for('main_page') }}" class="btn btn-primary">
+      ← Back to Home
+    </a>
+  </div>
+</div>
+{% endblock %}

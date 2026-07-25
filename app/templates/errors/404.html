@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="error-page">
+  <div class="error-container">
+    <span class="error-code">404</span>
+    <h1 class="error-title">Page Not Found</h1>
+    <p class="error-message">
+      The page you're looking for doesn't exist or has been moved.
+    </p>
+    <a href="{{ url_for('main_page') }}" class="btn btn-primary">
+      ← Back to Home
+    </a>
+  </div>
+</div>
+{% endblock %}
