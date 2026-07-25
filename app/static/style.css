@@ -805,6 +805,51 @@ body {
 }
 
 
+/* ===== ERROR PAGES ===== */
+
+.error-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 2rem 1.5rem;
+}
+
+.error-container {
+  text-align: center;
+  max-width: 500px;
+}
+
+.error-code {
+  font-family: var(--font-serif);
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.error-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.error-container .btn {
+  text-decoration: none;
+}
+
+
 /* ===== RESPONSIVE website ===== */
 @media (max-width: 768px) {
   .nav-container {

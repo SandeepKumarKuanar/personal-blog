@@ -7,6 +7,7 @@ from app.forms import RegistrationForm, LoginForm, AdminLogin, PostForm
 from app import app, bcrypt, db
 from app.models import Post, User, Tag
 from app.utils import extract_zip, render_markdown
+import logging
 
 
 @app.route("/")
@@ -79,7 +80,7 @@ def account():
 
 
 # we are adding new post here
-@app.route("/admin/new-post", methods=["GET", "POST"])
+@app.route("/dashboard/new-post", methods=["GET", "POST"])
 @login_required
 def new_post():
     if not current_user.is_admin:
@@ -141,7 +142,7 @@ def new_post():
 
 
 # we are viewing the post
-@app.route("/post/<int:post_id>")
+@app.route("/writings/<int:post_id>")
 def post_detail(post_id):
     post = Post.query.get_or_404(post_id)
     # we need to stop people from accessing the post
@@ -154,7 +155,7 @@ def post_detail(post_id):
 
 
 # unpublish a published blog
-@app.route("/admin/toggle-publish/<int:post_id>", methods=["POST"])
+@app.route("/dashboard/toggle-publish/<int:post_id>", methods=["POST"])
 @login_required
 def toggle_publish(post_id):
     if not current_user.is_admin:
@@ -170,10 +171,30 @@ def toggle_publish(post_id):
 
 
 # to edit a published post
-@app.route("/admin/edit-post/<int:post_id>", methods=["GET"])
+@app.route("/dashboard/edit-post/<int:post_id>", methods=["GET"])
 @login_required
 def edit_post(post_id):
     if not current_user.is_admin:
         abort(403)
     flash("Edit functionality coming soon!", "info")
     return redirect(url_for("account"))
+
+
+# Custom error pages
+# without using flask blueprints
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("errors/404.html", title="Page Not Found"), 404
+
+
+@app.errorhandler(403)
+def forbidden(error):
+    return render_template("errors/403.html", title="Forbidden"), 403
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    app.logger.error(f"Server Error: {error}")
+    return render_template("errors/500.html", title="Server Error"), 500
