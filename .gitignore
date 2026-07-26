@@ -1,10 +1,34 @@
-# Python-generated files
-__pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+# Database
+instance/
+*.db
+*.sqlite
+*.sqlite3
 
-# Virtual environments
-.venv
+# Uploaded media
+app/static/post_covers/
+app/static/post_images/
+app/static/temp/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
