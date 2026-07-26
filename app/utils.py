@@ -19,7 +19,7 @@ def extract_zip(zip_file, post_id):
         with zipfile.ZipFile(zip_file, "r") as z:
             z.extractall(temp_dir)
 
-        # --- NEW: Flatten the structure if there's a single folder ---
+        # --- Flatten the structure if there's a single folder ---
         items = os.listdir(temp_dir)
         if len(items) == 1 and os.path.isdir(os.path.join(temp_dir, items[0])):
             folder_path = os.path.join(temp_dir, items[0])
@@ -28,7 +28,6 @@ def extract_zip(zip_file, post_id):
                 dst = os.path.join(temp_dir, file)
                 shutil.move(src, dst)
             os.rmdir(folder_path)
-        # --- End flattening ---
 
         # Find the .md file (there should be exactly one)
         md_files = [f for f in os.listdir(temp_dir) if f.endswith(".md")]
@@ -61,7 +60,7 @@ def extract_zip(zip_file, post_id):
             ):
                 image_filenames.append(filename)
 
-        # --- NEW: Save images to permanent location ---
+        # --- Save images to permanent location ---
         if image_filenames:
             post_images_dir = os.path.join(
                 current_app.config["UPLOAD_FOLDER"], "post_images", str(post_id)
@@ -100,4 +99,3 @@ def render_markdown(md_content):
     return markdown2.markdown(
         md_content, extras=["fenced-code-blocks", "tables", "header-ids"]
     )
-

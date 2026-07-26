@@ -34,7 +34,7 @@
           {% endif %}
         </div>
         <div class="post-actions">
-          <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn-action btn-edit">✎ Edit</a>
+          <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn-action btn-edit">✏️ Edit</a>
           <form method="POST" action="{{ url_for('toggle_publish', post_id=post.id) }}" style="display: inline;">
             <button type="submit" class="btn-action btn-unpublish">
               {{ 'Unpublish' if post.published else 'Publish' }}
