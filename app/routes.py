@@ -4,7 +4,7 @@ from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 from app.forms import RegistrationForm, LoginForm, PostForm
-from app import app, bcrypt, db
+from app import app, bcrypt, db, posthog_client
 from app.models import Post, User, Tag
 from app.utils import extract_zip, render_markdown
 from sqlalchemy import or_
@@ -54,6 +54,14 @@ def blogs_page():
     for tag in all_tags:
         tag.published_count = tag.posts.filter_by(published=True).count()
 
+    if posthog_client:
+        distinct_id = str(current_user.id) if current_user.is_authenticated else request.remote_addr or "anonymous"
+        posthog_client.capture(
+            distinct_id=distinct_id,
+            event="writings_browsed",
+            properties={"has_tag_filter": bool(tag_names), "tag_count": len(tag_names), "filter_mode": mode},
+        )
+
     return render_template(
         "blogs.html",
         posts=posts,
@@ -80,6 +88,10 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        if posthog_client:
+            posthog_client.set(distinct_id=str(user.id), properties={"username": user.username, "is_admin": user.is_admin})
+            posthog_client.capture(distinct_id=str(user.id), event="user_registered", properties={"signup_method": "form"})
+
         flash("Account created for! You can now log in.", "success")
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
@@ -96,6 +108,11 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get("next")
+
+            if posthog_client:
+                posthog_client.set(distinct_id=str(user.id), properties={"username": user.username, "is_admin": user.is_admin})
+                posthog_client.capture(distinct_id=str(user.id), event="user_logged_in", properties={"login_method": "password", "remember_me": form.remember.data})
+
             flash("Logged in Successfully!!", "success")
             return redirect(next_page) if next_page else redirect(url_for("blogs_page"))
         else:
@@ -106,6 +123,8 @@ def login():
 
 @app.route("/logout")
 def logout():
+    if posthog_client and current_user.is_authenticated:
+        posthog_client.capture(distinct_id=str(current_user.id), event="user_logged_out")
     logout_user()
     return redirect(url_for("blogs_page"))
 
@@ -169,11 +188,21 @@ def new_post():
                 post.tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
 
                 db.session.commit()
+
+                if posthog_client:
+                    posthog_client.capture(
+                        distinct_id=str(current_user.id),
+                        event="post_created",
+                        properties={"tag_count": len(post.tags), "has_cover_image": bool(form.cover_image.data), "read_time": post.read_time},
+                    )
+
                 flash("Post published successfully!", "success")
                 return redirect(url_for("post_detail", post_id=post.id))
 
             except Exception as e:
                 db.session.rollback()
+                if posthog_client:
+                    posthog_client.capture_exception(e)
                 flash(f"Error processing ZIP: {str(e)}", "danger")
                 return render_template("admin_new_post.html", form=form)
         else:
@@ -193,6 +222,15 @@ def post_detail(post_id):
         current_user.is_authenticated and current_user.is_admin
     ):
         abort(404)
+
+    if posthog_client:
+        distinct_id = str(current_user.id) if current_user.is_authenticated else request.remote_addr or "anonymous"
+        posthog_client.capture(
+            distinct_id=distinct_id,
+            event="post_viewed",
+            properties={"post_id": post.id, "is_published": post.published, "read_time": post.read_time},
+        )
+
     return render_template("post.html", title=post.title, post=post)
 
 
@@ -206,6 +244,13 @@ def toggle_publish(post_id):
     post = Post.query.get_or_404(post_id)
     post.published = not post.published  # Toggle the status
     db.session.commit()
+
+    if posthog_client:
+        posthog_client.capture(
+            distinct_id=str(current_user.id),
+            event="post_visibility_toggled",
+            properties={"post_id": post.id, "is_now_published": post.published},
+        )
 
     status = "published" if post.published else "unpublished"
     flash(f'Post "{post.title}" has been {status}.', "success")
