@@ -137,6 +137,14 @@ def account():
         .order_by(Post.date_posted.desc())
         .all()
     )
+
+    if posthog_client:
+        posthog_client.capture(
+            distinct_id=str(current_user.id),
+            event="dashboard_viewed",
+            properties={"post_count": len(posts), "is_admin": current_user.is_admin},
+        )
+
     return render_template("dashboard.html", title="Accounts", posts=posts)
 
 
