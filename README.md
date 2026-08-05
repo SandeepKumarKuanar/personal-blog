@@ -7,7 +7,7 @@
 A fully-featured personal blog built with Flask, SQLite, and vanilla CSS. Write posts in Markdown, upload them as ZIP bundles, and publish instantly — no third‑party platforms, no lock‑in. Just your content, your design, and your server.
 
 🔗 **Live Demo:** [sandeepkumarkuanar.pythonanywhere.com](https://sandeepkumarkuanar.pythonanywhere.com)
-🔗 **Notes on the project:** [Notes on Personal blog]([https://sandeepkumarkuanar.pythonanywhere.com](https://sandeepkumarkuanar.pythonanywhere.com/writings/1))
+🔗 **Notes on the project:** [Notes on Personal blog]([https://sandeepkumarkuanar.pythonanywhere.com](https://sandeepkumarkuanar.pythonanywhere.com/writings/1)
 
 ---
 
