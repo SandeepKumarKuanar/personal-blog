@@ -55,11 +55,19 @@ def blogs_page():
         tag.published_count = tag.posts.filter_by(published=True).count()
 
     if posthog_client:
-        distinct_id = str(current_user.id) if current_user.is_authenticated else request.remote_addr or "anonymous"
+        distinct_id = (
+            str(current_user.id)
+            if current_user.is_authenticated
+            else request.remote_addr or "anonymous"
+        )
         posthog_client.capture(
             distinct_id=distinct_id,
             event="writings_browsed",
-            properties={"has_tag_filter": bool(tag_names), "tag_count": len(tag_names), "filter_mode": mode},
+            properties={
+                "has_tag_filter": bool(tag_names),
+                "tag_count": len(tag_names),
+                "filter_mode": mode,
+            },
         )
 
     return render_template(
@@ -89,8 +97,15 @@ def register():
         db.session.commit()
 
         if posthog_client:
-            posthog_client.set(distinct_id=str(user.id), properties={"username": user.username, "is_admin": user.is_admin})
-            posthog_client.capture(distinct_id=str(user.id), event="user_registered", properties={"signup_method": "form"})
+            posthog_client.set(
+                distinct_id=str(user.id),
+                properties={"username": user.username, "is_admin": user.is_admin},
+            )
+            posthog_client.capture(
+                distinct_id=str(user.id),
+                event="user_registered",
+                properties={"signup_method": "form"},
+            )
 
         flash("Account created for! You can now log in.", "success")
         return redirect(url_for("login"))
@@ -110,8 +125,18 @@ def login():
             next_page = request.args.get("next")
 
             if posthog_client:
-                posthog_client.set(distinct_id=str(user.id), properties={"username": user.username, "is_admin": user.is_admin})
-                posthog_client.capture(distinct_id=str(user.id), event="user_logged_in", properties={"login_method": "password", "remember_me": form.remember.data})
+                posthog_client.set(
+                    distinct_id=str(user.id),
+                    properties={"username": user.username, "is_admin": user.is_admin},
+                )
+                posthog_client.capture(
+                    distinct_id=str(user.id),
+                    event="user_logged_in",
+                    properties={
+                        "login_method": "password",
+                        "remember_me": form.remember.data,
+                    },
+                )
 
             flash("Logged in Successfully!!", "success")
             return redirect(next_page) if next_page else redirect(url_for("blogs_page"))
@@ -124,7 +149,9 @@ def login():
 @app.route("/logout")
 def logout():
     if posthog_client and current_user.is_authenticated:
-        posthog_client.capture(distinct_id=str(current_user.id), event="user_logged_out")
+        posthog_client.capture(
+            distinct_id=str(current_user.id), event="user_logged_out"
+        )
     logout_user()
     return redirect(url_for("blogs_page"))
 
@@ -201,7 +228,11 @@ def new_post():
                     posthog_client.capture(
                         distinct_id=str(current_user.id),
                         event="post_created",
-                        properties={"tag_count": len(post.tags), "has_cover_image": bool(form.cover_image.data), "read_time": post.read_time},
+                        properties={
+                            "tag_count": len(post.tags),
+                            "has_cover_image": bool(form.cover_image.data),
+                            "read_time": post.read_time,
+                        },
                     )
 
                 flash("Post published successfully!", "success")
@@ -232,11 +263,19 @@ def post_detail(post_id):
         abort(404)
 
     if posthog_client:
-        distinct_id = str(current_user.id) if current_user.is_authenticated else request.remote_addr or "anonymous"
+        distinct_id = (
+            str(current_user.id)
+            if current_user.is_authenticated
+            else request.remote_addr or "anonymous"
+        )
         posthog_client.capture(
             distinct_id=distinct_id,
             event="post_viewed",
-            properties={"post_id": post.id, "is_published": post.published, "read_time": post.read_time},
+            properties={
+                "post_id": post.id,
+                "is_published": post.published,
+                "read_time": post.read_time,
+            },
         )
 
     return render_template("post.html", title=post.title, post=post)
@@ -293,3 +332,8 @@ def forbidden(error):
 def internal_server_error(error):
     app.logger.error(f"Server Error: {error}")
     return render_template("errors/500.html", title="Server Error"), 500
+
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html", title="Contact")

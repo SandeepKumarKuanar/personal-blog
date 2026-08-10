@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="contact-page">
+  <div class="contact-container">
+    <!-- HEADER -->
+    <header class="contact-header">
+      <h1>Get in touch</h1>
+      <p class="contact-intro">
+        I'd love to hear from you — whether it's a collaboration idea, feedback on something I've written,
+        or a thoughtful question. I read every email that lands in my inbox.
+      </p>
+    </header>
+
+    <!-- TAGS SECTION -->
+    <section class="contact-section">
+      <h2>📬 Choose a tag</h2>
+      <p class="section-description">
+        Prefix your subject with one of these tags so I can triage your email quickly.
+      </p>
+      <ul class="tag-list">
+        <li><span><code>[collab]</code> <span>— Project collaboration, open-source work, joint research</span></span></li>
+        <li><span><code>[feedback]</code> <span>— Feedback on a specific blog post or project</span></span></li>
+        <li><span><code>[question]</code> <span>— Technical or philosophical questions about something you've written</span></span></li>
+        <li><span><code>[invite]</code> <span>— Speaking invites, podcast appearances, event participation</span></span></li>
+        <li><span><code>[idea]</code> <span>— Pitching a project idea you want my input on</span></span></li>
+        <li><span><code>[bug]</code> <span>— Bug reports or issues with my blog/projects</span></span></li>
+        <li><span><code>[feat]</code> <span>— Feature suggestions for my blog or projects</span></span></li>
+        <li><span><code>[meta]</code> <span>— Questions about my writing, journey, or philosophy</span></span></li>
+        <li><span><code>[other]</code> <span>— Everything else</span></span></li>
+      </ul>
+    </section>
+
+    <!-- TEMPLATE SECTION -->
+    <section class="contact-section">
+      <h2>✏️ Use this template</h2>
+      <p class="section-description">
+        Copy the template below, fill it out, and send it along.
+      </p>
+      <div class="template-box">
+        <button class="copy-btn" onclick="copyTemplate()">📋 Copy</button>
+        <pre id="email-template">
+Subject: [tag] Brief description
+
+Hi Sandeep,
+
+I'm reaching out because ...
+
+Here's what I'm thinking/asking/proposing:
+
+A bit more context:
+- What I've already tried or researched
+- What I'm hoping to get from this conversation
+- Timeline or urgency, if any
+
+Relevant links:
+- Link to my work/project/site
+- Link to the specific blog post or topic I'm referencing
+
+Looking forward to hearing from you.
+
+Best,
+[Your full name]
+[Your GitHub / LinkedIn / personal site]</pre>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <footer class="contact-cta">
+      <a href="mailto:kuanarsandeepkumar@gmail.com" class="btn btn-primary">
+        📧 Send me an email
+      </a>
+      <p class="cta-note">Your email will open in your default email client.</p>
+    </footer>
+  </div>
+</div>
+
+<script>
+  function copyTemplate() {
+    const template = document.getElementById('email-template');
+    const text = template.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      const original = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = original; }, 2000);
+    }).catch(() => {
+      const range = document.createRange();
+      range.selectNode(template);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      const btn = document.querySelector('.copy-btn');
+      const original = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = original; }, 2000);
+    });
+  }
+</script>
+{% endblock %}

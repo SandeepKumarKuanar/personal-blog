@@ -20,12 +20,11 @@
     <nav class="navbar">
       <div class="nav-container">
         <ul class="nav-links">
-          <li><a href="{{ url_for('main_page') }}">Home</a></li>
           <li><a href="{{ url_for('blogs_page') }}">Writings</a></li>
           <li><a href="https://github.com/SandeepKumarKuanar" target="_blank">GitHub</a></li>
           <li><a href="https://x.com/kuanar_sandeep" target="_blank">X</a></li>
           <li><a href="https://discord.gg/Q5CkTkvC3" target="_blank">Discord</a></li>
-          <li><a href="mailto:kuanarsandeepkumar@gmail.com">Contact</a></li>
+          <li><a href="{{ url_for('contact') }}">Contact</a></li>
         </ul>
       </div>
     </nav>
