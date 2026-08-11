@@ -19,12 +19,16 @@ A fully-featured personal blog built with Flask, SQLite, and vanilla CSS. Write 
 - **ZIP-based publishing** – Write in Markdown, bundle images, upload a ZIP, and the blog parses, renders, and displays your post automatically
 - **Markdown to HTML** – Uses `markdown2` with syntax highlighting via `pygments`
 - **Tag system** – Add, filter, and combine tags with OR/AND logic
-- **Admin dashboard** – Create, publish, unpublish, and manage posts
+- **Admin dashboard** – Create, edit, publish, unpublish, and manage posts
 - **User authentication** – Login, registration, and role‑based access (admin / regular user)
 - **Custom error pages** – 404, 403, and 500 pages that match your design
 - **Dark theme** – Clean, custom CSS with no external frameworks
 - **Analytics ready** – Built‑in PostHog integration (optional)
 - **Deployment ready** – Designed to run on PythonAnywhere
+- **Full CRUD** – Complete Create, Read, Update, Delete workflow for posts
+- **Share dropdown** – Share posts on X (Twitter) and LinkedIn, or copy the link with UTM tracking
+- **Open Graph tags** – Dynamic meta tags for rich social media previews
+- **Contact page** – Dedicated page with email tagging system and copy‑paste template
 
 ---
 
@@ -50,23 +54,27 @@ A fully-featured personal blog built with Flask, SQLite, and vanilla CSS. Write 
 personal-blog/
 ├── app/
 │   ├── __init__.py          # Flask app factory, extensions, PostHog setup
-│   ├── forms.py             # WTForms definitions (Login, Register, Post, Admin)
+│   ├── forms.py             # WTForms definitions (Login, Register, Post, Admin, Edit)
 │   ├── models.py            # SQLAlchemy models (User, Post, Tag)
-│   ├── routes.py            # All route handlers
+│   ├── routes.py            # All route handlers (CRUD, share, dashboard)
 │   ├── utils.py             # ZIP extraction, Markdown rendering, image rewriting
 │   ├── static/              # CSS, JS, and uploaded assets
-│   │   ├── style.css        # ~1000 lines of custom dark theme
+│   │   ├── style.css        # ~1200 lines of custom dark theme
 │   │   ├── pygments.css     # Syntax highlighting theme
-│   │   ├── js/tags.js       # Tag cloud filtering logic
+│   │   ├── js/
+│   │   │   ├── tags.js      # Tag cloud filtering logic
+│   │   │   └── share.js     # Share dropdown functionality (Copy, X, LinkedIn)
 │   │   ├── post_images/     # Images extracted from blog ZIPs
 │   │   └── post_covers/     # Blog cover images
 │   └── templates/           # Jinja2 templates
-│       ├── layout.html      # Base template
+│       ├── layout.html      # Base template with Open Graph tags
 │       ├── home.html        # Landing page with bio
 │       ├── blogs.html       # Writings listing with tag cloud
-│       ├── post.html        # Individual post view
-│       ├── dashboard.html   # Admin post management
+│       ├── post.html        # Individual post view with share dropdown
+│       ├── dashboard.html   # Admin post management (Edit/Delete buttons)
 │       ├── admin_new_post.html  # ZIP upload form
+│       ├── edit_post.html   # Edit post form (Markdown, tags, read time)
+│       ├── contact.html     # Contact page with email tagging system
 │       ├── login.html / register.html
 │       └── errors/          # 404, 403, 500 pages
 ├── instance/
@@ -181,6 +189,30 @@ The system will:
 - Render the Markdown to HTML with syntax highlighting
 - Store both the raw Markdown and the rendered HTML
 
+## ✏️ Editing a Post
+
+1. Log in as admin and go to **Dashboard**
+2. Click the **Edit** button next to the post you want to modify
+3. Update the title, Markdown content, tags, or read time
+4. Click **Update Post** — the HTML is automatically re‑rendered from the Markdown
+
+> **Note:** Inline images are preserved and don't need to be re‑uploaded during edits.
+
+## 🗑️ Deleting a Post
+
+1. Log in as admin and go to **Dashboard**
+2. Click the **Delete** button next to the post you want to remove
+3. Confirm the deletion — the post and its associated images are permanently removed
+
+## 🔗 Share Dropdown
+
+Each post includes a share dropdown with three options:
+- **Copy Link** – copies the post URL with UTM tracking parameters
+- **Share on X** – opens X (Twitter) with a pre‑filled post
+- **Share on LinkedIn** – opens LinkedIn with a rich preview using Open Graph tags
+
+The Open Graph tags are dynamic — each post generates its own title, description, and URL for social sharing.
+
 ---
 
 ## 🎨 Customization
@@ -269,15 +301,17 @@ This project is open source and available under the [MIT License](LICENSE).
 - [Corey Schafer](https://www.youtube.com/@coreyms) – Flask tutorial series that started it all
 - [Dr. Charles Severance](https://www.dr-chuck.com/) – For inspiring the journey into programming
 - The [Flask](https://flask.palletsprojects.com/), [SQLAlchemy](https://www.sqlalchemy.org/), and [PostHog](https://posthog.com/) communities
+- [PostHog](https://posthog.com) – Analytics integration for understanding readers
+- [roadmap.sh](https://roadmap.sh/dashboard) - For inspiring the implementations of this project
 
 ---
 
 ## 📬 Contact
 
-- **Blog:** [Hosted on PythonAnywhere](https://sandeepkumarkuanar.pythonanywhere.com)
+- **From Blog:** [Custom Email based contact page](https://sandeepkumarkuanar.pythonanywhere.com/contact)
 - **GitHub:** [SandeepKumarKuanar](https://github.com/SandeepKumarKuanar)
 - **X:** [@kuanar_sandeep](https://x.com/kuanar_sandeep)
-- **Email:** kuanarsandeepkumar@gmail.com
+- **Email:** `kuanarsandeepkumar@gmail.com`
 
 ---
 
