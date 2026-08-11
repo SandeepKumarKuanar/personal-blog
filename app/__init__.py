@@ -8,8 +8,8 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from posthog import Posthog
 
-load_dotenv()
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Get the directory where this __init__.py file is located (app/)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

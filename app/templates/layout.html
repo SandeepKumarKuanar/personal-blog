@@ -24,6 +24,15 @@
       href="{{ url_for('static', filename='style.css') }}"
     />
     
+    <script src="https://us.i.posthog.com/static/array.js"></script>
+    <script>
+        window.posthog = window.posthog || [];
+        window.posthog.init('phc_tTBR3gDviyUbfB9WoXot2zjZBDkiPYhBxv8HnEC4Gtdd', {
+            api_host: 'https://us.i.posthog.com',
+            person_profiles: 'identified_only',
+        })
+    </script>
+
     <!-- Syntax Highlighting (Pygments) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='pygments.css') }}" />
    <!-- ===== OPEN GRAPH / SOCIAL SHARING ===== -->
