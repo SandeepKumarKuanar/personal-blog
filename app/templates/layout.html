@@ -26,7 +26,26 @@
     
     <!-- Syntax Highlighting (Pygments) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='pygments.css') }}" />
-  </head>
+   <!-- ===== OPEN GRAPH / SOCIAL SHARING ===== -->
+<!-- Title -->
+<meta property="og:title" content="{% if post %}{{ post.title }}{% elif title %}{{ title }} | Sandeep Kumar Kuanar{% else %}Sandeep Kumar Kuanar{% endif %}" />
+<meta name="twitter:title" content="{% if post %}{{ post.title }}{% elif title %}{{ title }} | Sandeep Kumar Kuanar{% else %}Sandeep Kumar Kuanar{% endif %}" />
+
+<!-- Description -->
+<meta property="og:description" content="{% if post %}{{ post.content_raw | striptags | truncate(160) }}{% else %}Thoughts on Rust, Zig, systems thinking, and building with intent.{% endif %}" />
+<meta name="twitter:description" content="{% if post %}{{ post.content_raw | striptags | truncate(160) }}{% else %}Thoughts on Rust, Zig, systems thinking, and building with intent.{% endif %}" />
+
+<!-- URL & Type -->
+<meta property="og:url" content="{{ request.url }}" />
+<meta property="og:type" content="{% if post %}article{% else %}website{% endif %}" />
+
+<!-- Image -->
+<meta property="og:image" content="https://sandeepkumarkuanar.pythonanywhere.com/static/og-image.jpg" />
+<meta name="twitter:image" content="https://sandeepkumarkuanar.pythonanywhere.com/static/og-image.jpg" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@kuanar_sandeep" />  </head>
   <body>
     <!-- Flash Messages -->
     {% with messages=get_flashed_messages(with_categories=True) %} 
