@@ -78,3 +78,17 @@ class PostForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
         self.tags.choices = [(tag.id, tag.name) for tag in Tag.query.all()]
+
+
+class EditPostForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    content = TextAreaField("Content (Markdown)", validators=[DataRequired()])
+    read_time = IntegerField(
+        "Estimated Read Time (minutes)", validators=[DataRequired()]
+    )
+    tags = SelectMultipleField("Tags", coerce=int, validators=[DataRequired()])
+    submit = SubmitField("Update Post")
+
+    def __init__(self, *args, **kwargs):
+        super(EditPostForm, self).__init__(*args, **kwargs)
+        self.tags.choices = [(tag.id, tag.name) for tag in Tag.query.all()]

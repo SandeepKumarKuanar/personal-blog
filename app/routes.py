@@ -3,11 +3,12 @@ import os
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
-from app.forms import RegistrationForm, LoginForm, PostForm
+from app.forms import RegistrationForm, LoginForm, PostForm, EditPostForm
 from app import app, bcrypt, db, posthog_client
 from app.models import Post, User, Tag
 from app.utils import extract_zip, render_markdown
 from sqlalchemy import or_
+import shutil
 # from logging import Logger
 
 
@@ -304,16 +305,6 @@ def toggle_publish(post_id):
     return redirect(url_for("account"))
 
 
-# to edit a published post
-@app.route("/dashboard/edit-post/<int:post_id>", methods=["GET"])
-@login_required
-def edit_post(post_id):
-    if not current_user.is_admin:
-        abort(403)
-    flash("Edit functionality coming soon!", "info")
-    return redirect(url_for("account"))
-
-
 # Custom error pages
 # without using flask blueprints
 
@@ -337,3 +328,62 @@ def internal_server_error(error):
 @app.route("/contact")
 def contact():
     return render_template("contact.html", title="Contact")
+
+
+@app.route("/dashboard/edit-post/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def edit_post(post_id):
+    if not current_user.is_admin:
+        abort(403)
+
+    post = Post.query.get_or_404(post_id)
+    form = EditPostForm()
+    form.tags.choices = [(tag.id, tag.name) for tag in Tag.query.all()]
+
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content_raw = form.content.data
+        post.content = render_markdown(form.content.data)  # Re‑render
+        post.read_time = form.read_time.data
+        post.tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
+        db.session.commit()
+        flash("Post updated successfully!", "success")
+        return redirect(url_for("post_detail", post_id=post.id))
+
+    elif request.method == "GET":
+        form.title.data = post.title
+        form.content.data = post.content_raw
+        form.read_time.data = post.read_time
+        form.tags.data = [tag.id for tag in post.tags]
+
+    return render_template("edit_post.html", title="Edit Post", form=form, post=post)
+
+
+@app.route("/dashboard/delete-post/<int:post_id>", methods=["POST"])
+@login_required
+def delete_post(post_id):
+    if not current_user.is_admin:
+        abort(403)
+
+    post = Post.query.get_or_404(post_id)
+    post_title = post.title
+
+    # 1. Delete the post_images folder for this post (if it exists)
+    post_images_dir = os.path.join(
+        app.config["UPLOAD_FOLDER"], "post_images", str(post_id)
+    )
+    if os.path.exists(post_images_dir):
+        shutil.rmtree(post_images_dir)
+
+    # 2. Delete the cover image (if it's not the default)
+    if post.image_file and "default.jpg" not in post.image_file:
+        cover_path = os.path.join(app.config["UPLOAD_FOLDER"], post.image_file)
+        if os.path.exists(cover_path):
+            os.remove(cover_path)
+
+    # 3. Delete the post from the database
+    db.session.delete(post)
+    db.session.commit()
+    flash(f'Post "{post_title}" has been deleted.', "success")
+    return redirect(url_for("account"))
+    # cleans the entire canvas and removes the post

@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="edit-form-page">
+  <div class="form-container">
+    <h1>Edit Post</h1>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+      Editing: <strong style="color: var(--text-primary);">{{ post.title }}</strong>
+    </p>
+
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      <!-- CURRENT COVER (read‑only) -->
+      <div class="form-field">
+        <label style="display: block; font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.35rem;">Current Cover Image</label>
+        <img src="{{ url_for('static', filename=post.image_file) }}" alt="Current cover" style="max-width: 100%; max-height: 200px; border-radius: var(--radius); border: 1px solid var(--border);">
+      </div>
+
+      <!-- TITLE -->
+      <div class="form-field">
+        {{ form.title.label }}
+        {{ form.title(class="form-input") }}
+        {% if form.title.errors %}
+          <div class="invalid">
+            {% for error in form.title.errors %}<span>{{ error }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- CONTENT -->
+      <div class="form-field">
+        {{ form.content.label }}
+        {{ form.content(class="form-input", rows="15") }}
+        <small style="color: var(--text-muted); font-size: 0.8rem;">Edit the Markdown content. HTML will be re‑rendered automatically.</small>
+        {% if form.content.errors %}
+          <div class="invalid">
+            {% for error in form.content.errors %}<span>{{ error }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- READ TIME -->
+      <div class="form-field">
+        {{ form.read_time.label }}
+        {{ form.read_time(class="form-input", type="number", min="1") }}
+        {% if form.read_time.errors %}
+          <div class="invalid">
+            {% for error in form.read_time.errors %}<span>{{ error }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- TAGS -->
+      <div class="form-field">
+        {{ form.tags.label }}
+        {{ form.tags(class="form-input", size="5") }}
+        <small style="color: var(--text-muted); font-size: 0.8rem;">Hold Ctrl/Cmd to select multiple tags.</small>
+        {% if form.tags.errors %}
+          <div class="invalid">
+            {% for error in form.tags.errors %}<span>{{ error }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap;">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('post_detail', post_id=post.id) }}" class="btn" style="background: var(--bg-secondary); color: var(--text-secondary); text-decoration: none; text-align: center;">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

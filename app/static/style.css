@@ -730,7 +730,7 @@ body {
   color: var(--text-secondary);
 }
 
-/* Post Actions */
+/* ===== POST ACTIONS (Dashboard) ===== */
 .post-actions {
   display: flex;
   gap: 0.5rem;
@@ -739,16 +739,23 @@ body {
 }
 
 .btn-action {
-  padding: 0.3rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;  /* Fixed height for consistency */
+  padding: 0 1rem;  /* Consistent horizontal padding */
   font-size: 0.8rem;
   font-weight: 500;
+  font-family: var(--font-sans);
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition), color var(--transition);
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .btn-action:hover {
@@ -761,30 +768,18 @@ body {
   color: var(--accent);
 }
 
+.btn-delete:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
 .btn-unpublish:hover {
   border-color: #e74c3c;
   color: #e74c3c;
 }
 
-.no-posts {
-  color: var(--text-muted);
-  font-style: italic;
-  padding: 2rem 0;
-  text-align: center;
-}
-
 /* ===== RESPONSIVE Dashboard ===== */
 @media (max-width: 768px) {
-  .dashboard-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-
-  .btn-add {
-    justify-content: center;
-  }
-
   .dashboard-post {
     flex-direction: column;
     align-items: flex-start;
@@ -795,8 +790,13 @@ body {
     width: 100%;
     justify-content: flex-start;
   }
-}
 
+  .btn-action {
+    height: 36px;
+    padding: 0 1.2rem;
+    font-size: 0.85rem;
+  }
+}
 
 /* ===== ERROR PAGES ===== */
 
@@ -1219,6 +1219,23 @@ body {
 .share-option:last-child {
   border-bottom: none;
 }
+
+/* ===== EDIT PAGE ===== */
+.edit-form-page .form-container {
+  max-width: 800px;  /* Wider than the default 480px */
+}
+
+.edit-form-page textarea.form-input {
+  min-height: 400px;  /* Give more space for editing Markdown */
+}
+
+/* ===== DELETE BUTTON ===== */
+.btn-delete:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+
 /* ===== RESPONSIVE website ===== */
 @media (max-width: 768px) {
   .nav-container {
