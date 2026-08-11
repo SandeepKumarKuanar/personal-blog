@@ -10,6 +10,7 @@ A fully-featured personal blog built with Flask, SQLite, and vanilla CSS. Write 
 - 🔗 **Partly inspired by:**
   1. [personal blogging site](https://roadmap.sh/projects/personal-blog)
   2. [basic HTML website](https://roadmap.sh/projects/basic-html-website)
+  3. [personal portfolio](https://roadmap.sh/projects/portfolio-website)
 
 ---
 
