@@ -345,6 +345,7 @@ def edit_post(post_id):
         post.content_raw = form.content.data
         post.content = render_markdown(form.content.data)  # Re‑render
         post.read_time = form.read_time.data
+        post.date_posted = form.date_posted.data
         post.tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
         db.session.commit()
         flash("Post updated successfully!", "success")
@@ -354,6 +355,7 @@ def edit_post(post_id):
         form.title.data = post.title
         form.content.data = post.content_raw
         form.read_time.data = post.read_time
+        form.date_posted.data = post.date_posted.date()
         form.tags.data = [tag.id for tag in post.tags]
 
     return render_template("edit_post.html", title="Edit Post", form=form, post=post)

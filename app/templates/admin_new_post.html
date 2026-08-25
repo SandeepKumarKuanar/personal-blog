@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="admin-form-page">
+  <div class="form-container">
   <h1>New Post</h1>
   <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
@@ -37,20 +38,29 @@
       {% endif %}
     </div>
 
+      <!-- TAGS -->
     <div class="form-field">
-      {{ form.tags.label }}
-      {{ form.tags(class="form-input", size="5") }}
-      {% if form.tags.errors %}
+        {{ form.tags.label }}
+        <div class="checkbox-group">
+          {% for subfield in form.tags %}
+            <label class="checkbox-label">
+              {{ subfield() }} {{ subfield.label.text }}
+            </label>
+          {% endfor %}
+        </div>
+        {% if form.tags.errors %}
         <div class="invalid">
           {% for error in form.tags.errors %}<span>{{ error }}</span>{% endfor %}
         </div>
       {% endif %}
-      <small>Hold Ctrl/Cmd to select multiple tags.</small>
     </div>
+    
+
 
     <div class="form-submit">
       {{ form.submit(class="btn btn-primary") }}
     </div>
   </form>
+  </div>
 </div>
 {% endblock %}

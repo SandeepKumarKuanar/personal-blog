@@ -1235,6 +1235,39 @@ body {
   color: #e74c3c;
 }
 
+/* ===== CHECKBOX GROUP ===== */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ===== ADMIN NEW POST PAGE ===== */
+.admin-form-page .form-container {
+  max-width: 800px;  /* Match edit page */
+}
+
+.admin-form-page textarea.form-input {
+  min-height: 400px;  /* Match edit page */
+}
+
 
 /* ===== RESPONSIVE website ===== */
 @media (max-width: 768px) {
@@ -1266,7 +1299,7 @@ body {
   }
 
   .post-title {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 
   .form-container {

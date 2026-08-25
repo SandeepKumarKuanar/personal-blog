@@ -12,9 +12,16 @@ from wtforms import (
     TextAreaField,
     IntegerField,
     SelectMultipleField,
+    DateField,
+    widgets,
 )
 
 from app.models import User, Tag
+
+
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 
 class AdminLogin(FlaskForm):
@@ -72,7 +79,7 @@ class PostForm(FlaskForm):
     read_time = IntegerField(
         "Estimated Read Time (minutes)", validators=[DataRequired()], default=5
     )
-    tags = SelectMultipleField("Tags", coerce=int, validators=[DataRequired()])
+    tags = MultiCheckboxField("Tags", coerce=int, validators=[DataRequired()])
     submit = SubmitField("Publish")
 
     def __init__(self, *args, **kwargs):
@@ -86,7 +93,10 @@ class EditPostForm(FlaskForm):
     read_time = IntegerField(
         "Estimated Read Time (minutes)", validators=[DataRequired()]
     )
-    tags = SelectMultipleField("Tags", coerce=int, validators=[DataRequired()])
+    date_posted = DateField(
+        "Published Date", format="%Y-%m-%d", validators=[DataRequired()]
+    )
+    tags = MultiCheckboxField("Tags", coerce=int, validators=[DataRequired()])
     submit = SubmitField("Update Post")
 
     def __init__(self, *args, **kwargs):

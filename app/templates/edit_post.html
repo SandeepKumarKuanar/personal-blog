@@ -3,9 +3,9 @@
 <div class="edit-form-page">
   <div class="form-container">
     <h1>Edit Post</h1>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+    <h3 style="color: var(--text-muted); margin-bottom: 1.5rem;">
       Editing: <strong style="color: var(--text-primary);">{{ post.title }}</strong>
-    </p>
+    </h3>
 
     <form method="POST">
       {{ form.hidden_tag() }}
@@ -50,16 +50,32 @@
         {% endif %}
       </div>
 
+      <!-- ===== PUBLISHED DATE ===== -->
+      <div class="form-field">
+        {{ form.date_posted.label }}
+        {{ form.date_posted(class="form-input", type="date") }}
+        {% if form.date_posted.errors %}
+        <div class="invalid">
+          {% for error in form.date_posted.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
       <!-- TAGS -->
       <div class="form-field">
         {{ form.tags.label }}
-        {{ form.tags(class="form-input", size="5") }}
-        <small style="color: var(--text-muted); font-size: 0.8rem;">Hold Ctrl/Cmd to select multiple tags.</small>
+        <div class="checkbox-group">
+          {% for subfield in form.tags %}
+            <label class="checkbox-label">
+              {{ subfield() }} {{ subfield.label.text }}
+            </label>
+          {% endfor %}
+        </div>
         {% if form.tags.errors %}
-          <div class="invalid">
-            {% for error in form.tags.errors %}<span>{{ error }}</span>{% endfor %}
-          </div>
-        {% endif %}
+        <div class="invalid">
+          {% for error in form.tags.errors %}<span>{{ error }}</span>{% endfor %}
+        </div>
+      {% endif %}
       </div>
 
       <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap;">
