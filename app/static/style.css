@@ -1268,6 +1268,36 @@ body {
   min-height: 400px;  /* Match edit page */
 }
 
+/* ===== TABLES ===== */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.post-content th,
+.post-content td {
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.post-content th {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.post-content tr:nth-child(even) {
+  background: var(--bg-card);
+}
+
+.post-content tr:hover {
+  background: var(--bg-secondary);
+}
+
 
 /* ===== RESPONSIVE website ===== */
 @media (max-width: 768px) {

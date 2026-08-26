@@ -79,7 +79,10 @@ class PostForm(FlaskForm):
     read_time = IntegerField(
         "Estimated Read Time (minutes)", validators=[DataRequired()], default=5
     )
-    tags = MultiCheckboxField("Tags", coerce=int, validators=[DataRequired()])
+    tags = MultiCheckboxField(
+        "Tags",
+        coerce=int,
+    )
     submit = SubmitField("Publish")
 
     def __init__(self, *args, **kwargs):
@@ -96,7 +99,7 @@ class EditPostForm(FlaskForm):
     date_posted = DateField(
         "Published Date", format="%Y-%m-%d", validators=[DataRequired()]
     )
-    tags = MultiCheckboxField("Tags", coerce=int, validators=[DataRequired()])
+    tags = MultiCheckboxField("Tags", coerce=int)
     submit = SubmitField("Update Post")
 
     def __init__(self, *args, **kwargs):
