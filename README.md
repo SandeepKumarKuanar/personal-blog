@@ -3,6 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![Flask Version](https://img.shields.io/badge/flask-3.1.3-green.svg)](https://flask.palletsprojects.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-v1.1.0-blue.svg)](https://github.com/SandeepKumarKuanar/personal-blog/releases)
 
 A fully-featured personal blog built with Flask, SQLite, and vanilla CSS. Write posts in Markdown, upload them as ZIP bundles, and publish instantly — no third‑party platforms, no lock‑in. Just your content, your design, and your server.
 - 🔗 **Live Demo:** [sandeepkumarkuanar.pythonanywhere.com](https://sandeepkumarkuanar.pythonanywhere.com)
@@ -13,6 +14,12 @@ A fully-featured personal blog built with Flask, SQLite, and vanilla CSS. Write 
   3. [personal portfolio](https://roadmap.sh/projects/portfolio-website)
 
 ---
+## 📸 Screenshots
+
+![Blog Homepage](screenshots/homepage.png)
+![Admin Dashboard](screenshots/dashboard.png)
+![Edit Page](screenshots/edit.png)
+![New Post](screenshots/new.png)
 
 ## ✨ Features
 
@@ -126,6 +133,8 @@ cp .env.example .env
 
 Edit `.env` with your PostHog credentials (optional — the app will work without them):
 
+> **Note:** The `.env` file is not tracked in Git. See `.env.example` for all available variables.
+
 ```
 POSTHOG_PROJECT_TOKEN=your-posthog-project-token
 POSTHOG_HOST=https://us.i.posthog.com
@@ -212,6 +221,17 @@ Each post includes a share dropdown with three options:
 - **Share on LinkedIn** – opens LinkedIn with a rich preview using Open Graph tags
 
 The Open Graph tags are dynamic — each post generates its own title, description, and URL for social sharing.
+
+## ❓ FAQ
+
+**Q: How do I add a new tag?**
+A: Run the command in the "Adding Tags" section above, or use the admin dashboard.
+
+**Q: Can I change the theme colors?**
+A: Yes — edit the CSS variables in `app/static/style.css`.
+
+**Q: How do I deploy this to a custom domain?**
+A: Update the `SERVER_NAME` in `app/__init__.py` and configure your DNS.
 
 ---
 
@@ -314,5 +334,4 @@ This project is open source and available under the [MIT License](LICENSE).
 - **Email:** `kuanarsandeepkumar@gmail.com`
 
 ---
-
 Built with curiosity, empathy, and intent. 🚀
