@@ -16,10 +16,24 @@ A fully-featured personal blog built with Flask, SQLite, and vanilla CSS. Write 
 ---
 ## 📸 Screenshots
 
-![Blog Homepage](screenshots/homepage.png)
-![Admin Dashboard](screenshots/dashboard.png)
-![Edit Page](screenshots/edit.png)
-![New Post](screenshots/new.png)
+<table>
+  <tr>
+    <td><img src="screenshots/homepage.png" alt="Blog Homepage" width="400"/></td>
+    <td><img src="screenshots/dashboard.png" alt="Admin Dashboard" width="400"/></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Homepage</em></td>
+    <td align="center"><em>Dashboard</em></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/edit.png" alt="Edit Page" width="400"/></td>
+    <td><img src="screenshots/new.png" alt="New Post" width="400"/></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Edit Page</em></td>
+    <td align="center"><em>New Post</em></td>
+  </tr>
+</table>
 
 ## ✨ Features
 
